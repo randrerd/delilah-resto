@@ -1,31 +1,25 @@
 const { Sequelize } = require('sequelize');
 const db = require('../db/database');
 
-const User = db.define('user', {
+const Order = db.define('order', {
+  status: {
+    type: Sequelize.STRING,
+  },
+  products: {
+    type: Sequelize.STRING,
+  },
+  payment_method: {
+    type: Sequelize.STRING,
+  },
   username: {
-    type: Sequelize.STRING,
-  },
-  firstname: {
-    type: Sequelize.STRING,
-  },
-  lastname: {
-    type: Sequelize.STRING,
-  },
-  email: {
-    type: Sequelize.STRING,
-  },
-  phone: {
     type: Sequelize.STRING,
   },
   address: {
     type: Sequelize.STRING,
   },
-  password: {
+  total_amount: {
     type: Sequelize.STRING,
-  },
-  is_admin: {
-    type: Sequelize.BOOLEAN,
   },
 });
 
-module.exports = User;
+module.exports = Order;
