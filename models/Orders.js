@@ -2,23 +2,14 @@ const { Sequelize } = require('sequelize');
 const db = require('../db/database');
 
 const Order = db.define('order', {
-  status: {
-    type: Sequelize.STRING,
+  status_id: {
+    type: Sequelize.INTEGER,
   },
-  products: {
-    type: Sequelize.STRING,
+  user_id: {
+    type: Sequelize.INTEGER,
   },
-  payment_method: {
-    type: Sequelize.STRING,
-  },
-  username: {
-    type: Sequelize.STRING,
-  },
-  address: {
-    type: Sequelize.STRING,
-  },
-  total_amount: {
-    type: Sequelize.STRING,
+  payment_method_id: {
+    type: Sequelize.INTEGER,
   },
 });
 
