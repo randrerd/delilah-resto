@@ -2,7 +2,9 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const dotenv = require('dotenv');
+const cors = require('cors');
 const dotenvResult = dotenv.config();
+
 
 
 //Databse
@@ -15,6 +17,8 @@ db.authenticate().then(() => console.log('db connected')).catch(err => console.l
 app.use(morgan('dev'));
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
+app.use(cors());
+
 
 app.use('/users', require('./routes/users'))
 const PORT = process.env.PORT || 3000;
