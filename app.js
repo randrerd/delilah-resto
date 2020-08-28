@@ -24,6 +24,8 @@ app.use(cors());
 
 app.use('/users', require('./routes/users'));
 app.use('/products', require('./routes/products'));
+app.use('/uploads', express.static('./uploads'));
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
