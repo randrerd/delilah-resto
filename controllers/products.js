@@ -6,7 +6,7 @@ module.exports.products_add = async (req, res) => {
     let newProduct = await Product.create({
       name,
       price,
-      product_image: req.file.path,
+      product_image: `http://localhost:${process.env.PORT || "3000"}/${req.file.path}`,
     });
 
     res
