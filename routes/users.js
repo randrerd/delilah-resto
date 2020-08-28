@@ -7,11 +7,7 @@ const checkAdmin = require('../middleware/checkAdmin')
 
 const User = require('../models/User');
 
-router.get('/', (req, res)=> {
-    res.status(200).json({
-        message: 'You here'
-    })
-})
+router.get('/', checkAdmin, UsersController.users_get_all)
 router.get('/:userId', checkAuth, UsersController.users_get_user);
 router.post('/register', UsersController.users_register)
 router.post('/login', UsersController.users_login)

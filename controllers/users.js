@@ -120,3 +120,14 @@ module.exports.users_get_user = async (req, res) => {
     res.status(500).json({ error: err})
   }
 }
+
+module.exports.users_get_all = async (req, res) => {
+  try {
+    const users = await User.findAll()
+  
+    res.status(200).json({users});
+  } catch (err) {
+    res.status(500).json({ error: err})
+
+  }
+}
