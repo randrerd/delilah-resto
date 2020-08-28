@@ -81,10 +81,9 @@ module.exports.users_login = async (req, res) => {
             { expiresIn: '1h' }
           );
 
+          res.cookie('session_id', token);
           return res.status(200).json({
-            message:
-              'Auth succesful! Ahora al hacer operaciones que necesite de autorización podés mandar como Header de Authorization el siguiente token poniendo antes la palabra "Bearer"',
-            token: token,
+            message: 'Auth succesful!',
           });
         }
       });
@@ -109,3 +108,15 @@ module.exports.users_delete = async (req, res) => {
     res.status(500).json({ error: err });
   }
 };
+
+module.exports.users_get_user = async (req, res) => {
+  let data = req.params;
+  try {
+    const user = await User.findOne({where: {id: data.userId}});
+    if(!user){
+      return res.status(404).json({message: "User not found"})
+    } else res.status(200).json(user)
+  } catch (err) {
+    res.status(500).json({ error: err})
+  }
+}
