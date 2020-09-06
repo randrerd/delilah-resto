@@ -10,6 +10,7 @@ const app = express();
 //Databse
 const db = require('./db/database');
 
+
 //Try db connection
 db.authenticate()
   .then(() => console.log('db connected'))
@@ -24,6 +25,7 @@ app.use(cors());
 
 app.use('/users', require('./routes/users'));
 app.use('/products', require('./routes/products'));
+app.use('/orders', require('./routes/orders'))
 app.use('/uploads', express.static('./uploads'));
 
 const PORT = process.env.PORT || 3000;
