@@ -20,7 +20,7 @@ module.exports = async (req, res, next) => {
           return res.status(403).json({ message: 'Access Forbidden' });
         } else next();
       } else next();
-    }
+    } else return res.status(401).json({ message: 'You need to log in first' });
   } catch (error) {
     return res.status(401).json({
       message: 'Auth failed',
