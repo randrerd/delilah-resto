@@ -20,7 +20,7 @@ module.exports.products_add = async (req, res) => {
 module.exports.products_get_all = async (req, res) => {
   try {
     const products = await Product.findAll({
-      attributes: ['name', 'price', 'product_image'],
+      attributes: ['id','name', 'price', 'product_image'],
     });
     res.status(200).json({ products });
   } catch (err) {
