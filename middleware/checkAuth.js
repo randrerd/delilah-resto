@@ -9,8 +9,12 @@ module.exports = async (req, res, next) => {
     if ('session_id' in cookies) {
       const token = cookies.session_id;
       const decoded = jwt.verify(token, process.env.JWT_KEY);
+      let isPermitted;
+      //Checks if the request is trying to access user details
+      if (userIdToAccess) {
+        isPermitted = userIdToAccess == decoded.userId;
+      } else isPermitted = true;
 
-      let isPermitted = userIdToAccess == decoded.userId;
       let isAdmin = await User.findOne({
         where: { id: decoded.userId, is_admin: 1 },
       });
