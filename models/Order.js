@@ -1,5 +1,7 @@
 const { Sequelize } = require('sequelize');
 const db = require('../db/database');
+const Product = require('../models/Product');
+const OrderProduct = require('../models/OrderProduct');
 
 const Order = db.define('order', {
   status: {
@@ -20,5 +22,8 @@ const Order = db.define('order', {
     defaultValue: "Efectivo"
   },
 });
+
+Order.belongsToMany(Product, { through: OrderProduct });
+Product.belongsToMany(Order, { through: OrderProduct });
 
 module.exports = Order;
