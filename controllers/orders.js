@@ -35,6 +35,9 @@ module.exports.orders_create = async (req, res) => {
         let productDetails = await Product.findOne({
           where: { id: product_id },
         });
+        if(!productDetails){
+          return res.status(404).json({message: `Product #${product_id} not found, please choose a different product`})
+        }
         //Gets the total amount for each product
         let totalProductAmount = productDetails.price * product_quantity;
         //and adds it to the array
@@ -65,13 +68,13 @@ module.exports.orders_create = async (req, res) => {
         payment_method,
         description: descriptionArray.join(' '),
       });
-      //Loops the products array to create orderproduct table
+      // Loops the products array to create orderproduct table
       for (let i = 0; i < productsArray.length; i++) {
         const product = productsArray[i];
         let { product_id, product_quantity } = product;
         let newOrderProduct = await OrderProduct.create({
-          order_id: newOrder.id,
-          product_id,
+          orderId: newOrder.id,
+          productId: product_id,
           product_quantity,
         });
       }
