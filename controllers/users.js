@@ -61,14 +61,14 @@ module.exports.users_login = async (req, res) => {
   let { username, password } = data;
   try {
     const userLogin = await User.findOne({ where: { username } });
-
+    
     if (!userLogin) {
       res.status(401).json({
-        message: 'Auth failed',
+        message: 'Auth failed, please check your username and/or password',
       });
     } else {
       bcrypt.compare(password, userLogin.password, (err, result) => {
-        console.log(result);
+       console.log(result)
         if (!result) {
           return res.status(401).json({ message: 'Auth failed' });
         } else {
@@ -112,22 +112,31 @@ module.exports.users_delete = async (req, res) => {
 module.exports.users_get_user = async (req, res) => {
   let data = req.params;
   try {
-    const user = await User.findOne({where: {id: data.userId}});
-    if(!user){
-      return res.status(404).json({message: "User not found"})
-    } else res.status(200).json(user)
+    const user = await User.findOne({
+      where: { id: data.userId },
+      attributes: [
+        'username',
+        'firstname',
+        'lastname',
+        'email',
+        'phone',
+        'address',
+      ],
+    });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    } else res.status(200).json(user);
   } catch (err) {
-    res.status(500).json({ error: err})
+    res.status(500).json({ error: err });
   }
-}
+};
 
 module.exports.users_get_all = async (req, res) => {
   try {
-    const users = await User.findAll()
-  
-    res.status(200).json({users});
-  } catch (err) {
-    res.status(500).json({ error: err})
+    const users = await User.findAll();
 
+    res.status(200).json({ users });
+  } catch (err) {
+    res.status(500).json({ error: err });
   }
-}
+};
