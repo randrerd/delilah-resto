@@ -112,16 +112,16 @@ module.exports.orders_modify = async (req, res) => {
 module.exports.orders_delete = async (req, res) => {
   try {
     const { orderId } = req.params;
-    let deletedOrder = await Order.destroy({ where: { id: orderId } });
+    let deletedOrder = await Order.update({status: "Cancelada"},{ where: { id: orderId } });
     console.log(deletedOrder)
-    if (!deletedOrder) {
+    if (!deletedOrder[0]) {
       return res
         .status(404)
         .json({ message: 'Order not found, please try again' });
     } else
       res
         .status(200)
-        .json({ message: 'The order has been deleted successfully' });
+        .json({ message: 'The order has been cancelled successfully' });
   } catch (err) {
     res.status(500).json({ error: err });
   }
