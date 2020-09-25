@@ -60,13 +60,6 @@ module.exports.users_register = async (req, res) => {
             });
             res.status(400).json({ errorsThrown });
           }
-
-          // .then(() => {
-          //   res.status(200).json({ message: 'User created succesfully!' });
-          // })
-          // .catch((err) => {
-
-          // });
         }
       });
     }
