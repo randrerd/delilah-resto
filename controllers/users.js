@@ -1,21 +1,21 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { Sequelize } = require('sequelize');
 
 module.exports.users_register = async (req, res) => {
-  const data = req.body;
-  let {
-    username,
-    firstname,
-    lastname,
-    email,
-    phone,
-    address,
-    password,
-    is_admin,
-  } = data;
-
   try {
+    const data = req.body;
+    let {
+      username,
+      firstname,
+      lastname,
+      email,
+      phone,
+      address,
+      password,
+      is_admin,
+    } = data;
     const usernameAlreadyRegistered = await User.findAll({
       where: { username },
     });
@@ -45,6 +45,16 @@ module.exports.users_register = async (req, res) => {
             address,
             password: hash,
             is_admin,
+          }).catch((err) => {
+            let errorsThrown = [];
+            err.errors.forEach((errorItem) => {
+              let errorToShow = {
+                msg: errorItem.message,
+                type: errorItem.type,
+              };
+              errorsThrown.push(errorToShow);
+            });
+            res.status(400).json({ errorsThrown });
           });
           res.status(200).json({ message: 'User created succesfully!' });
         }
@@ -61,14 +71,14 @@ module.exports.users_login = async (req, res) => {
   let { username, password } = data;
   try {
     const userLogin = await User.findOne({ where: { username } });
-    
+
     if (!userLogin) {
       res.status(401).json({
         message: 'Auth failed, please check your username and/or password',
       });
     } else {
       bcrypt.compare(password, userLogin.password, (err, result) => {
-       console.log(result)
+        console.log(result);
         if (!result) {
           return res.status(401).json({ message: 'Auth failed' });
         } else {
