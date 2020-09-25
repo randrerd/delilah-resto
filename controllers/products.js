@@ -6,21 +6,36 @@ module.exports.products_add = async (req, res) => {
     let newProduct = await Product.create({
       name,
       price,
-      product_image: `http://localhost:${process.env.PORT || "3000"}/${req.file.path}`,
+      product_image: `http://localhost:${process.env.PORT || '3000'}/${
+        req.file.path
+      }`,
     });
 
     res
       .status(200)
       .json({ message: 'Product created succesfully', product: newProduct });
   } catch (err) {
-    res.status(400).json({ error: err });
+    //Checks if error is due to validation
+    let errorsThrown = [];
+    if (!err.errors.length) {
+      res.status(500).json(err);
+    } else {
+      err.errors.forEach((errorItem) => {
+        let errorToShow = {
+          msg: errorItem.message,
+          type: errorItem.type,
+        };
+        errorsThrown.push(errorToShow);
+      });
+      res.status(400).json({ errorsThrown });
+    }
   }
 };
 
 module.exports.products_get_all = async (req, res) => {
   try {
     const products = await Product.findAll({
-      attributes: ['id','name', 'price', 'product_image'],
+      attributes: ['id', 'name', 'price', 'product_image'],
     });
     res.status(200).json({ products });
   } catch (err) {
