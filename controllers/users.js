@@ -36,16 +36,20 @@ module.exports.users_register = async (req, res) => {
             error: err,
           });
         } else {
-          const newUser = await User.create({
-            username,
-            firstname,
-            lastname,
-            email,
-            phone,
-            address,
-            password: hash,
-            is_admin,
-          }).catch((err) => {
+          //Tries to create new user and throws any validation error
+          try {
+            const newUser = await User.create({
+              username,
+              firstname,
+              lastname,
+              email,
+              phone,
+              address,
+              password: hash,
+              is_admin,
+            });
+            res.status(200).json({ message: 'User created succesfully!' });
+          } catch (err) {
             let errorsThrown = [];
             err.errors.forEach((errorItem) => {
               let errorToShow = {
@@ -55,8 +59,14 @@ module.exports.users_register = async (req, res) => {
               errorsThrown.push(errorToShow);
             });
             res.status(400).json({ errorsThrown });
-          });
-          res.status(200).json({ message: 'User created succesfully!' });
+          }
+
+          // .then(() => {
+          //   res.status(200).json({ message: 'User created succesfully!' });
+          // })
+          // .catch((err) => {
+
+          // });
         }
       });
     }
