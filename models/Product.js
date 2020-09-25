@@ -11,7 +11,7 @@ const Product = db.define('product', {
     }
   },
   price: {
-    type: Sequelize.STRING,
+    type: Sequelize.DECIMAL,
     validate: {
       isDecimal: {
         msg: "Product price must be a number, please try again"
